@@ -286,11 +286,11 @@ function endGameCalc() {
 //Function for switching themes.
 function themeSwitch() {
   let theme = document.getElementsByTagName("link")[0];
-  if (theme.getAttribute("href") == "../css/light.css") {
-    theme.setAttribute("href", "../css/dark.css");
+  if (theme.getAttribute("href") == "css/light.css") {
+    theme.setAttribute("href", "css/dark.css");
     lightAndDark.innerHTML = "&#9788";
   } else {
-    theme.setAttribute("href", "../css/light.css");
+    theme.setAttribute("href", "css/light.css");
     lightAndDark.innerHTML = "&#9790;";
   }
 }
