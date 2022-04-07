@@ -16,6 +16,14 @@ const answer4 = document.createElement("div");
 answer4.className = "answer";
 const optionContainer = document.createElement("div");
 optionContainer.className = "option";
+const op1 = (document.createElement("label").innertext =
+"Choose category:");
+const op2 = (document.createElement("label").innertext =
+"Choose difficulty level:");
+const op3 = (document.createElement("label").innertext =
+"Choose game type:");
+const op4 = (document.createElement("label").innertext =
+"Choose number of questions:");
 const lightAndDark = document.createElement("button");
 lightAndDark.className = "lod";
 lightAndDark.innerHTML = "&#9788";
@@ -77,7 +85,13 @@ let renderActivity = async () => {
     let activityObj = await getData("https://opentdb.com/api.php?");
     gameArr = activityObj.results;
     quest = gameArr[questionIndex];
-    console.log(quest);
+    if(gameArr < num) {
+        main.removeChild(answerlist);
+        alertBox.innerText="Not enough questions for this category, please try again!";
+       setTimeout(startscreen, 2000);
+        
+    }
+    else {
     if (typ === "boolean") {
         if (round === 0) {
           for (let i = 0; i < answerButtons.length; i++) {
@@ -99,29 +113,22 @@ let renderActivity = async () => {
           multiGame();
         }
       }
+    }
 }
 
 
 //Startpage with menus.
 function startscreen() {
-  if (round === 0) {
+  if(upperbox.innerHTML="<span>you're such a</span><br><h1>Know-it-all</h1>") {
     main.appendChild(lightAndDark);
     upperbox.innerHTML = "<span>you're such a</span><br><h1>Know-it-all</h1>";
-
+    alertBox.innerText="";
     startbutton.innerText = " Start ";
-
     document.body.appendChild(main);
     main.append(upperbox, optionContainer);
     upperbox.append(startbutton, alertBox);
-    const op1 = (document.createElement("label").innertext =
-      "Choose category:");
-    const op2 = (document.createElement("label").innertext =
-      "Choose difficulty level:");
-    const op3 = (document.createElement("label").innertext =
-      "Choose game type:");
-    const op4 = (document.createElement("label").innertext =
-      "Choose number of questions:");
     optionContainer.append(optionsbox);
+    if (optionsbox.childNodes.length === 0){
     optionsbox.append(
       op1,
       category,
@@ -163,9 +170,8 @@ function startscreen() {
       dif = difficulty.value;
       num = numberOfQuest.value;
       typ = trueOrFalse.value;
-      console.log(cat, dif, num, typ);
       startGame();
-    });
+    });}
   } else {
     main.append(upperbox, optionContainer);
   }
@@ -178,7 +184,6 @@ function startGame() {
   main.appendChild(answerlist);
   if (typ === "boolean") {
     upperbox.appendChild(alertBox);
-    answerlist.append(answer, answer2);
     renderActivity();
   } else {
     answerlist.append(answer, answer2, answer3, answer4);
@@ -216,6 +221,7 @@ function multiGame() {
 
 //Function to start the true-or-false-game.
 function trueOrFalseGame() {
+answerlist.append(answer, answer2);
   answer.innerText = "True";
   answer2.innerText = "False";
   quest = gameArr[questionIndex];
@@ -235,8 +241,8 @@ function reset() {
   count = 0;
   questionIndex = 0;
   score = 0;
-  answerlist.remove();
   round++;
+  answerlist.remove();
 }
 
 //Shuffle function to be able to shift around values in an array.
@@ -260,15 +266,14 @@ function endGameCalc() {
   upperbox.innerText = "";
   answerlist.innerHTML = "";
   upperbox.appendChild(alertBox);
+  upperbox.appendChild(restart);
   restart.addEventListener("click", () => {
     reset();
     startscreen();
-    upperbox.removeChild(restart);
     upperbox.innerHTML = "<span>you're such a</span><br><h1>Know-it-all</h1>";
     upperbox.appendChild(startbutton);
     alertBox.className = "";
   });
-  upperbox.appendChild(restart);
   if (score / num > 0.75) {
     alertBox.className = "great";
     alertBox.innerText =
